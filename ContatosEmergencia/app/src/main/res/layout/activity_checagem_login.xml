@@ -106,23 +106,6 @@
             app:layout_constraintStart_toEndOf="@+id/btLogar"
             app:layout_constraintTop_toBottomOf="@+id/edt_Pass" />
 
-        <TextView
-            android:id="@+id/tvEsqueceuSenha"
-            android:layout_width="121dp"
-            android:layout_height="27dp"
-
-            android:layout_marginTop="124dp"
-            android:layout_marginEnd="128dp"
-            android:autoLink="all"
-            android:background="#880E4F"
-            android:linksClickable="false"
-            android:selectAllOnFocus="false"
-            android:text="Esqueceu a senha?"
-            android:textColor="#FFFFFF"
-            android:textColorLink="#004D40"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edt_Pass" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

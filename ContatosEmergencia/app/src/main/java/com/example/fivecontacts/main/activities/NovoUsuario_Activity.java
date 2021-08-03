@@ -29,7 +29,6 @@ public class NovoUsuario_Activity extends AppCompatActivity {
     EditText edEmail;
     Switch swLogado;
 
-    Switch swTema;
     Button btCriar;
 
 
@@ -45,7 +44,6 @@ public class NovoUsuario_Activity extends AppCompatActivity {
         edEmail=findViewById(R.id.edEmail);
         swLogado=findViewById(R.id.swLogado);
 
-        swTema= findViewById(R.id.swTema);
 
         setTitle("Novo Usuário");
 
@@ -123,7 +121,6 @@ public class NovoUsuario_Activity extends AppCompatActivity {
                 boolean manterLogado;
                 manterLogado= swLogado.isChecked();
 
-                boolean temaEscuro=swTema.isChecked();
 
                 SharedPreferences salvaUser= getSharedPreferences("usuarioPadrao", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor escritor= salvaUser.edit();
@@ -136,8 +133,6 @@ public class NovoUsuario_Activity extends AppCompatActivity {
                 //Falta Salvar o E-mail
                 escritor.putString("email",email);
                 escritor.putBoolean("manterLogado",manterLogado);
-
-                escritor.putBoolean("tema",temaEscuro);
 
                 escritor.commit(); //Salva em Disco
 

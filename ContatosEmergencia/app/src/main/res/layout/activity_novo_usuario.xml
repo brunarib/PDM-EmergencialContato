@@ -79,7 +79,6 @@
             android:id="@+id/btCriar"
             android:layout_width="271dp"
             android:layout_height="55dp"
-            android:layout_marginTop="28dp"
             android:background="#FFFFFF"
             android:text="Cadastrar"
             android:textColor="#024447"
@@ -88,7 +87,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.504"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/swTema" />
+            tools:layout_editor_absoluteY="343dp" />
 
         <EditText
             android:id="@+id/edtNome"
@@ -140,20 +139,6 @@
             app:layout_constraintHorizontal_bias="0.563"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edt_Pass2" />
-
-        <Switch
-            android:id="@+id/swTema"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#880E4F"
-            android:text="Tema escuro?"
-            android:textColor="#FFFFFF"
-            android:textOff="Não"
-            android:textOn="Sim"
-            android:textSize="24sp"
-            android:textStyle="italic"
-            app:layout_constraintStart_toStartOf="@+id/swLogado"
-            app:layout_constraintTop_toBottomOf="@+id/swLogado" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

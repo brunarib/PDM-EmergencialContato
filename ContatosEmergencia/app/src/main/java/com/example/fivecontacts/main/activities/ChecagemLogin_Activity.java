@@ -77,8 +77,7 @@ public class ChecagemLogin_Activity extends AppCompatActivity {
             edPass = findViewById(R.id.edt_Pass);
 
             //Colocando Underline (Vamos usar esse campo mais na frente com o FireBase)
-            mTextView = findViewById(R.id.tvEsqueceuSenha);
-            mTextView.setPaintFlags(mTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+           // mTextView.setPaintFlags(mTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
             //Evento de limpar Componente
             edUser.setOnTouchListener(new View.OnTouchListener() {
@@ -171,10 +170,9 @@ public class ChecagemLogin_Activity extends AppCompatActivity {
         String nomeSalvo = temUser.getString("nome","");
         String emailSalvo = temUser.getString("email","");
         boolean manterLogado=temUser.getBoolean("manterLogado",false);
-        boolean temaEscuro=temUser.getBoolean("tema",false);
+
 
         user=new User(nomeSalvo,loginSalvo,senhaSalva,emailSalvo,manterLogado);
-        user.setTema_escuro(temaEscuro);
         return user;
     }
 

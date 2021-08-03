@@ -9,7 +9,9 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -51,6 +53,8 @@ public class ListaDeContatos_Activity extends AppCompatActivity implements UIEdu
     BottomNavigationView bnv;
     User user;
 
+
+
     String numeroCall;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,9 +78,6 @@ public class ListaDeContatos_Activity extends AppCompatActivity implements UIEdu
                     setTitle("Contatos de Emergência de "+user.getNome());
                   //  preencherListView(user); //Montagem do ListView
                     preencherListViewImagens(user);
-                  //  if (user.isTema_escuro()){
-                    //    ((ConstraintLayout) (lv.getParent())).setBackgroundColor(Color.BLACK);
-                    //}
                 }
             }
         }
@@ -117,7 +118,6 @@ public class ListaDeContatos_Activity extends AppCompatActivity implements UIEdu
         user.setContatos(contatos);
     }
     protected  void preencherListViewImagens(User user){
-
         final ArrayList<Contato> contatos = user.getContatos();
         Collections.sort(contatos);
         if (contatos != null) {
@@ -148,13 +148,53 @@ public class ListaDeContatos_Activity extends AppCompatActivity implements UIEdu
 
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (checarPermissaoPhone_SMD(contatos.get(i).getNumero())) {
-                    Uri uri = Uri.parse(contatos.get(i).getNumero());
-                    Intent itLigar = new Intent(Intent.ACTION_CALL, uri);
-                    startActivity(itLigar);
-                }
+
+
+                    if (checarPermissaoPhone_SMD(contatos.get(i).getNumero())) {
+
+                        Uri uri = Uri.parse(contatos.get(i).getNumero());
+                        //  Intent itLigar = new Intent(Intent.ACTION_DIAL, uri);
+                        Intent itLigar = new Intent(Intent.ACTION_CALL, uri);
+                        startActivity(itLigar);
+                    }
+
+
                 }
             });
+
+
+            lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+
+                    new AlertDialog.Builder(ListaDeContatos_Activity.this)
+                            .setIcon(android.R.drawable.ic_delete)
+                            .setTitle("Você tem certeza ?")
+                            .setMessage("Você quer Deletar este item")
+                            .setPositiveButton("SIM!", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                    contatos.remove(contatos.get(position));
+                                    Log.v("PDM3","contatos:"+contatos.size());
+
+
+
+                                }
+
+                            })
+                            .setNegativeButton("NÃO",null)
+                            .show();
+
+
+                    return  true;
+                }
+
+
+            });
+
+            Log.v("PDM3","contatos:"+contatos.size());
+
 
         }
 
@@ -198,9 +238,10 @@ public class ListaDeContatos_Activity extends AppCompatActivity implements UIEdu
         }//fim do IF do tamanho de contatos
     }
 
-    protected boolean checarPermissaoPhone_SMD(String numero){
+    protected boolean checarPermissaoPhone_SMD(String numero) {
 
         numeroCall=numero;
+
       if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
       == PackageManager.PERMISSION_GRANTED){
 
@@ -209,6 +250,9 @@ public class ListaDeContatos_Activity extends AppCompatActivity implements UIEdu
           return true;
 
       } else {
+          Uri number = Uri.parse(numeroCall);
+          Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
+          startActivity(callIntent);
 
             if ( shouldShowRequestPermissionRationale(Manifest.permission.CALL_PHONE)){
 
@@ -242,18 +286,19 @@ public class ListaDeContatos_Activity extends AppCompatActivity implements UIEdu
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
                                             int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case 2222:
-               if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
-                   Uri uri = Uri.parse(numeroCall);
-                   Intent itLigar = new Intent(Intent.ACTION_CALL, uri);
-                   startActivity(itLigar);
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Uri uri = Uri.parse(numeroCall);
+                    Intent itLigar = new Intent(Intent.ACTION_CALL, uri);
+                    startActivity(itLigar);
 
-               }else{
-                   Uri uri = Uri.parse(numeroCall);
-                   Intent itDial = new Intent(Intent.ACTION_DIAL, uri);
-                   startActivity(itDial);
-               }
+                }if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Uri uri = Uri.parse(numeroCall);
+                    Intent itDial = new Intent(Intent.ACTION_DIAL, uri);
+                    startActivity(itDial);
+                }
                 break;
         }
     }
@@ -287,15 +332,15 @@ public class ListaDeContatos_Activity extends AppCompatActivity implements UIEdu
             user=atualizarUser();
             setTitle("Contatos de Emergência de "+user.getNome());
             atualizarListaDeContatos(user);
-           // preencherListViewImagens(user);
-            preencherListView(user); //Montagem do ListView
+            preencherListViewImagens(user);
+            //preencherListView(user); //Montagem do ListView
         }
 
         if (requestCode == 1112) {//Retorno de Mudar Contatos
             bnv.setSelectedItemId(R.id.anvLigar);
             atualizarListaDeContatos(user);
-            //preencherListViewImagens(user);
-            preencherListView(user); //Montagem do ListView
+            preencherListViewImagens(user);
+            //preencherListView(user); //Montagem do ListView
         }
 
 

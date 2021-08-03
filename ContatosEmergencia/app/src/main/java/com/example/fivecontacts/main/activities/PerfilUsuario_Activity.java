@@ -30,6 +30,7 @@ public class PerfilUsuario_Activity extends AppCompatActivity implements BottomN
 
     Button btModificar;
     BottomNavigationView bnv;
+    Button logout;
 
     User user;
     @Override
@@ -47,6 +48,7 @@ public class PerfilUsuario_Activity extends AppCompatActivity implements BottomN
         edNome=findViewById(R.id.edtNome);
         edEmail=findViewById(R.id.edEmail);
         swLogado=findViewById(R.id.swLogado);
+        logout=findViewById(R.id.btLogout);
 
         Intent quemChamou = this.getIntent();
         if (quemChamou != null) {
@@ -75,6 +77,14 @@ public class PerfilUsuario_Activity extends AppCompatActivity implements BottomN
                 user.setEmail(edEmail.getText().toString());
                 user.setManterLogado(swLogado.isChecked());
                 salvarModificacoes(user);
+            }
+        });
+
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logout(user);
             }
         });
     }
@@ -113,12 +123,33 @@ public class PerfilUsuario_Activity extends AppCompatActivity implements BottomN
         escritor.putBoolean("manterLogado",user.isManterLogado());
 
 
-        //Falta Salvar o E-mail
 
         escritor.commit(); //Salva em Disco
 
         Toast.makeText(PerfilUsuario_Activity.this,"Modificações Salvas",Toast.LENGTH_LONG).show() ;
 
         finish();
+    }
+
+
+    public void logout(User user){
+        SharedPreferences salvaUser= getSharedPreferences("usuarioPadrao", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor escritor= salvaUser.edit();
+
+        escritor.clear();
+        escritor.apply(); //Salva em Disco
+
+        SharedPreferences contatos= getSharedPreferences("contatos", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor= contatos.edit();
+
+        escritor.clear();
+        escritor.apply(); //Salva em Disco
+
+        Toast.makeText(PerfilUsuario_Activity.this,"Logout",Toast.LENGTH_LONG).show() ;
+
+        finish();
+
+
+       
     }
 }

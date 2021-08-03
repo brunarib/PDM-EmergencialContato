@@ -73,6 +73,9 @@ public class AlterarContatos_Activity extends AppCompatActivity implements Botto
                 return false;
             }
         });
+
+
+
     }
 
     public void salvarContato (Contato w){
@@ -160,7 +163,7 @@ public class AlterarContatos_Activity extends AppCompatActivity implements Botto
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         Contato c= new Contato();
                         c.setNome(nomesContatos[i]);
-                        c.setNumero("tel:+"+telefonesContatos[i]);
+                        c.setNumero("tel:"+telefonesContatos[i]);
                         if(user.getContatos().contains(c) != true){
                             salvarContato(c);
                         }
