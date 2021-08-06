@@ -82,7 +82,7 @@ public class AlterarContatos_Activity extends AppCompatActivity implements Botto
         SharedPreferences salvaContatos =
                 getSharedPreferences("contatos",Activity.MODE_PRIVATE);
 
-        int num = salvaContatos.getInt("numContatos", 0); //checando quantos contatos já tem
+        int num = salvaContatos.getInt("numContatos", 0);
         SharedPreferences.Editor editor = salvaContatos.edit();
         try {
             ByteArrayOutputStream dt = new ByteArrayOutputStream();

@@ -133,19 +133,26 @@ public class PerfilUsuario_Activity extends AppCompatActivity implements BottomN
 
 
     public void logout(User user){
-        SharedPreferences salvaUser= getSharedPreferences("usuarioPadrao", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor escritor= salvaUser.edit();
 
-        escritor.clear();
-        escritor.apply(); //Salva em Disco
 
+        //cria preference para usuario
+        SharedPreferences excluiUser= getSharedPreferences("usuarioPadrao", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor escritor= excluiUser.edit();
+
+        //cria preference para contatos
         SharedPreferences contatos= getSharedPreferences("contatos", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor= contatos.edit();
 
-        escritor.clear();
-        escritor.apply(); //Salva em Disco
+        //limpa contatos
+        editor.clear();
+        editor.commit(); //Salva em Disco
 
-        Toast.makeText(PerfilUsuario_Activity.this,"Logout",Toast.LENGTH_LONG).show() ;
+        //limpa usuario e remove contatos
+        escritor.clear();
+        escritor.remove("contatos");
+        escritor.commit(); //Salva em Disco
+
+        Toast.makeText(PerfilUsuario_Activity.this,"dados apagados",Toast.LENGTH_LONG).show() ;
 
         finish();
 

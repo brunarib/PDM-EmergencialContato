@@ -118,7 +118,10 @@ public class ListaDeContatos_Activity extends AppCompatActivity implements UIEdu
         user.setContatos(contatos);
     }
     protected  void preencherListViewImagens(User user){
-        final ArrayList<Contato> contatos = user.getContatos();
+         ArrayList<Contato> contatos = user.getContatos();
+
+        Log.v("PDM3","contatos list view:"+contatos.size());
+
         Collections.sort(contatos);
         if (contatos != null) {
             String[] contatosNomes, contatosAbrevs;
@@ -162,7 +165,7 @@ public class ListaDeContatos_Activity extends AppCompatActivity implements UIEdu
                 }
             });
 
-
+            //Chama metodo de deleção do contato
             lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -175,31 +178,70 @@ public class ListaDeContatos_Activity extends AppCompatActivity implements UIEdu
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
 
-                                    contatos.remove(contatos.get(position));
-                                    Log.v("PDM3","contatos:"+contatos.size());
-
-
+                                    deletarContato(contatos.get(position), user);
 
                                 }
 
                             })
                             .setNegativeButton("NÃO",null)
                             .show();
-
-
                     return  true;
                 }
-
-
             });
-
-            Log.v("PDM3","contatos:"+contatos.size());
 
 
         }
 
 
     }
+    //metodo de deleção
+    public void deletarContato(Contato contatoDeletado, User user){
+
+        SharedPreferences recuperarContatos = getSharedPreferences("contatos", Activity.MODE_PRIVATE);
+
+        int num = recuperarContatos.getInt("numContatos", 0);
+
+        Contato contato;
+        int posicao = 0;
+
+        for (int i = 1; i <= num; i++) {
+            String objSel = recuperarContatos.getString("contato" + i, "");
+            if (objSel.compareTo("") != 0) {
+                try {
+                    ByteArrayInputStream bis = new ByteArrayInputStream
+                            (objSel.getBytes(StandardCharsets.ISO_8859_1.name()));
+                    ObjectInputStream oos = new ObjectInputStream(bis);
+                    contato = (Contato) oos.readObject();
+
+                    // verifica se contato está null e se o numero é igual ao da lista existente
+                    if (contato != null && contatoDeletado.getNumero().equals(contato.getNumero())) {
+                        posicao = i;
+                        break;
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+
+
+        // Edita a lista de contato existente removendo o cotato selecionado
+        SharedPreferences.Editor editor = recuperarContatos.edit();
+        editor.remove("contato" + posicao);
+        editor.commit();
+        //Mensagem de sucesso
+        Toast.makeText(this, "Contato deletado com sucesso!", Toast.LENGTH_SHORT).show();
+
+        //captura infos atualizadas do usuario e solicita atualização da lista de contato e da view
+        user = atualizarUser();
+        atualizarListaDeContatos(user);
+        preencherListViewImagens(user);
+
+    }
+
+
     protected void preencherListView(User user) {
 
         final ArrayList<Contato> contatos = user.getContatos();
